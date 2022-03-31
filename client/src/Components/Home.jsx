@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import PDFViewer from 'pdf-viewer-reactjs'
+import DisplayPDF from './DisplayPDF'
 import Illustration from '../assets/illustration.png'
 
-const Home = () => {
+
+const Home = ({ Base_URL }) => {
     const [file, setFile] = useState()
     const [url, setURL] = useState()
     const [languages, setLanguages] = useState()
     const [transcriptURL, setTranscriptURL] = useState()
 
     useEffect(() => {
-        document.getElementById('download').disabled = true
+        document.getElementById('transcript').disabled = true
         document.getElementById('form_1').hidden = false
         document.getElementById('form_2').hidden = true
         document.getElementById('scroll').hidden = true
 
-        axios.get('http://localhost:5000/getLanguages')
-            .then(res => { setLanguages(res.data.split(' ')) })
+        axios.get(Base_URL + 'getLanguages')
+            .then(res => setLanguages(res.data.split(',')))
             .catch(err => console.log(err))
     }, [])
 
@@ -26,12 +27,12 @@ const Home = () => {
             const formData = new FormData()
             formData.append('file', file)
 
-            fetch('http://localhost:5000/uploadfile', {
+            fetch(Base_URL + 'uploadfile', {
                 method: 'POST',
                 body: formData
             }).then(response => {
                 if (response.ok) {
-                    document.getElementById('download').disabled = false
+                    document.getElementById('transcript').disabled = false
                     alert('File uploaded successfully')
                     document.getElementById('form_1').hidden = true
                     document.getElementById('form_2').hidden = false
@@ -43,7 +44,7 @@ const Home = () => {
             })
         }
         else if (url) {
-            fetch('http://localhost:5000/uploadurl', {
+            fetch(Base_URL + 'uploadurl', {
                 method: 'POST',
                 body: JSON.stringify({ url: url }),
                 headers: {
@@ -51,7 +52,7 @@ const Home = () => {
                 }
             }).then(response => {
                 if (response.ok) {
-                    document.getElementById('download').disabled = false
+                    document.getElementById('transcript').disabled = false
                     document.getElementById('form_1').hidden = true
                     document.getElementById('form_2').hidden = false
                     alert('File uploaded successfully')
@@ -70,11 +71,13 @@ const Home = () => {
         e.preventDefault()
         alert('Transcription started...')
 
-        fetch('http://localhost:5000/transcript', {
+        fetch(Base_URL + 'transcript', {
             method: 'POST'
         }).then(response => {
             if (response.ok) {
-                downloadFile()
+                document.getElementById('transcript').disabled = true
+                loadFile()
+                alert('Transcription completed\nScroll down to see the transcript')
             } else {
                 throw new Error('Something went wrong')
             }
@@ -83,20 +86,13 @@ const Home = () => {
         })
     }
 
-    const downloadFile = (e) => {
-        e.preventDefault()
-        fetch('http://localhost:5000/downloadfile').then(response => {
+    const loadFile = () => {
+        fetch(Base_URL + 'getTranscript').then(response => {
             if (response.ok) {
                 response.blob().then(blob => {
                     let url = window.URL.createObjectURL(blob)
                     setTranscriptURL(url)
                     document.getElementById('scroll').hidden = false
-                    return
-
-                    let transcript = document.createElement('a')
-                    transcript.href = url
-                    transcript.download = 'transcript_' + Date.now() + '.pdf'
-                    transcript.click()
                 })
             } else {
                 throw new Error('Something went wrong')
@@ -106,10 +102,21 @@ const Home = () => {
         })
     }
 
+    const downloadFile = () => {
+        if (transcriptURL) {
+            let transcript = document.createElement('a')
+            transcript.href = transcriptURL
+            transcript.download = 'transcript_' + Date.now() + '.pdf'
+            transcript.click()
+        }
+        else
+            alert('Transcript not available')
+    }
+
     return (
         <>
             <h1 className='title'><u>Heartz | Transcriptor</u></h1>
-            <div className='row'>
+            <div className='row' style={{ height: "72vh" }}>
                 <div className='col'>
                     <img src={Illustration} alt='Illustration' className='img-fluid' width="50%" />
                 </div>
@@ -133,15 +140,15 @@ const Home = () => {
                         </select>
                         {!languages && <p>Loading...</p>}
 
-                        <button type="button" id='download' className="btn btn-outline-success mt-5" onClick={startTranscript}> Start Transcription
+                        <button type="button" id='transcript' className="btn btn-outline-success mt-5" onClick={startTranscript}> Start Transcription
                         </button>
                     </form>
                 </div>
             </div>
 
-            <div className='row' id='scroll'>
+            <div id='scroll'>
                 <div id="pdf">
-                    {transcriptURL && <PDFViewer document={{ url: transcriptURL }} />}
+                    <DisplayPDF file={transcriptURL} downloadFile={downloadFile} />
                 </div>
             </div>
         </>

@@ -30,11 +30,11 @@ def transcript():
 def getLanguages():
     if request.method == 'GET':
         languages = list(googletrans.LANGUAGES.values())
-        return ' '.join(languages)
+        return ','.join(languages)
 
 
-@app.route('/downloadfile', methods=['GET', 'POST'])
-def downloadfile():
+@app.route('/getTranscript', methods=['GET', 'POST'])
+def getTranscript():
     if request.method == 'GET':
         return send_from_directory('./Temp', 'transcript1.pdf', as_attachment=True)
 

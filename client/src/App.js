@@ -8,11 +8,12 @@ import About from './Components/About';
 
 function App() {
   const [page, setPage] = useState('home');
+  const Base_URL = "http://localhost:5000/";
 
   let renderPage = null;
   switch (page) {
     case 'home':
-      renderPage = <Home />;
+      renderPage = <Home Base_URL={Base_URL} />;
       break;
     case 'model':
       renderPage = <Model />;
@@ -24,7 +25,7 @@ function App() {
       renderPage = <About />;
       break;
     default:
-      renderPage = <Home />;
+      renderPage = <Home Base_URL={Base_URL} />;
   }
 
   return (
