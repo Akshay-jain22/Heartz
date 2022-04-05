@@ -6,15 +6,16 @@ import Illustration from '../assets/illustration.png'
 
 const Home = ({ Base_URL }) => {
     const [file, setFile] = useState()
+    const [model, setModel] = useState()
     const [url, setURL] = useState()
     const [languages, setLanguages] = useState()
     const [transcriptURL, setTranscriptURL] = useState()
 
     useEffect(() => {
-        document.getElementById('transcript').disabled = true
-        document.getElementById('form_1').hidden = false
         document.getElementById('form_2').hidden = true
+        document.getElementById('form_1').hidden = false
         document.getElementById('scroll').hidden = true
+        document.getElementById('transcript').disabled = true
 
         axios.get(Base_URL + 'getLanguages')
             .then(res => setLanguages(res.data.split(',')))
@@ -132,7 +133,10 @@ const Home = ({ Base_URL }) => {
                     </form>
 
                     <form className='mt-3' id='form_2'>
-                        <label htmlFor="lang" className="form-label">Choose Language to Translate Text</label>
+                        <label htmlFor="formFile" className="form-label">Upload Trained Model File (Optional)</label>
+                        <input className="form-control" type="file" id="formFile" accept=".h5" name="file" onChange={(e) => setModel(e.target.files[0])} />
+
+                        <label htmlFor="lang" className="form-label mt-3">Choose Language to Translate Text</label>
                         <select defaultValue={'english'} className="form-select" name='lang' id="inputGroupSelect02">
                             {languages && languages.map((lang, index) => {
                                 return <option key={index} value={lang}>{lang}</option>
