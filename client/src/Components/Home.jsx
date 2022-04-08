@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import DisplayPDF from './DisplayPDF'
-import Illustration from '../assets/illustration.png'
+import Illustration from '../assets/Illustration_Home.png'
 
 
 const Home = ({ Base_URL }) => {

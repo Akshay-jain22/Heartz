@@ -7,7 +7,7 @@ const Navbar = (props) => {
             </button>
             <button onClick={() => props.setPage('model')} type="button" className="btn btn-dark navbtn"> Train Voice Model
             </button>
-            <button onClick={() => props.setPage('accuracy')} type="button" className="btn btn-dark navbtn"> Compare Accuracy
+            <button onClick={() => props.setPage('accuracy')} type="button" className="btn btn-dark navbtn"> Calculate Accuracy
             </button>
             <button onClick={() => props.setPage('about')} type="button" className="btn btn-dark navbtn"> About
             </button>

@@ -39,5 +39,11 @@ def getTranscript():
         return send_from_directory('./Temp', 'transcript1.pdf', as_attachment=True)
 
 
+@app.route('/getModel', methods=['GET', 'POST'])
+def getModel():
+    if request.method == 'GET':
+        return send_from_directory('./Temp', 'Model.h5', as_attachment=True)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
