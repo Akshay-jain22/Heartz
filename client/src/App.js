@@ -5,6 +5,7 @@ import Home from './Components/Home';
 import Model from './Components/Model';
 import Accuracy from './Components/Accuracy';
 import About from './Components/About';
+import Docs from './Components/Docs';
 
 function App() {
   const [page, setPage] = useState('home');
@@ -23,6 +24,9 @@ function App() {
       break;
     case 'about':
       renderPage = <About />;
+      break;
+    case 'docs':
+      renderPage = <Docs />;
       break;
     default:
       renderPage = <Home Base_URL={Base_URL} />;

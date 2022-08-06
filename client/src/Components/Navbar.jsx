@@ -12,6 +12,8 @@ const Navbar = (props) => {
             </button>
             <button onClick={() => props.setPage('about')} type="button" className="btn btn-dark navbtn"> About
             </button>
+            <button onClick={() => props.setPage('docs')} type="button" className="btn btn-dark navbtn"> Docs
+            </button>
             <img src={SIHLogo} style={{ height: '7vh', marginLeft: 'auto', marginRight: '20px' }}></img>
         </nav>
     );
