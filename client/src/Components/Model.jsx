@@ -33,8 +33,7 @@ const Model = () => {
                 a.href = url
                 a.download = 'Model_' + Date.now() + '.h5'
                 a.click()
-            }
-            )
+            })
     }
 
     return (

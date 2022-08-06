@@ -116,7 +116,7 @@ const Home = ({ Base_URL }) => {
 
     return (
         <>
-            <h1 className='title'><u>Heartz | Transcriptor</u></h1>
+            <h1 className='title'><u>Heartz | Notes Maker</u></h1>
             <div className='row' style={{ height: "72vh" }}>
                 <div className='col'>
                     <img src={Illustration} alt='Illustration' className='img-fluid' width="50%" />
